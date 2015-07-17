@@ -1,8 +1,11 @@
 package com.example.comarch.firstapp;
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,15 +47,24 @@ public class DataFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String name = nameText.getText().toString();
-                String surnama = surnameText.getText().toString();
-                if (name.length() == 0 || surnama.length() == 0) {
+                String surname = surnameText.getText().toString();
+                if (name.length() == 0 || surname.length() == 0) {
                     Toast.makeText(DataFragment.this.getActivity(), "You must fill both field!", Toast.LENGTH_LONG).show();
-                } else {
-                    SharedPreferences settings = DataFragment.this.getActivity().getPreferences(Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putString("name", name);
-                    editor.putString("surname", name);
-                    editor.commit();
+//                } else {
+//                    DatabaseExample database = new DatabaseExample(getActivity());
+//                    Data data = new Data(name,surname);
+//                    boolean ok = database.addData(data);
+//                    if(ok){
+//                        Toast.makeText(DataFragment.this.getActivity(), "Save successful!", Toast.LENGTH_LONG).show();
+//                    } else {
+//                        Toast.makeText(DataFragment.this.getActivity(), "Something go wrong.", Toast.LENGTH_LONG).show();
+//                    }
+//                }
+                }else {
+                    ContentValues values = new ContentValues();
+                    values.put(ExampleProvider.NAME, name);
+                    values.put(ExampleProvider.SURNAME, surname);
+                    Uri uri = getActivity().getContentResolver().insert(ExampleProvider.CONTENT_URI, values);
                     Toast.makeText(DataFragment.this.getActivity(), "Save successful!", Toast.LENGTH_LONG).show();
                 }
             }

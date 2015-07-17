@@ -24,6 +24,15 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+//            getFragmentManager().popBackStack();
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -31,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
 
         private Button buttonForDataFragment;
         private Button buttonForPreviewFragment;
+        private Button buttonForAllData;
 
         public PlaceholderFragment() {
         }
@@ -41,6 +51,7 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             buttonForDataFragment = (Button) rootView.findViewById(R.id.dataButton);
             buttonForPreviewFragment = (Button) rootView.findViewById(R.id.previewButton);
+            buttonForAllData = (Button) rootView.findViewById(R.id.allDataButton);
             buttonForDataFragment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,6 +69,16 @@ public class MainActivity extends ActionBarActivity {
                     FragmentManager fm = PlaceholderFragment.this.getActivity().getFragmentManager();
                     FragmentTransaction fragmentTransaction = fm.beginTransaction();
                     fragmentTransaction.replace(R.id.container, previewDataFragment).commit();
+                }
+            });
+
+            buttonForAllData.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AllData allData = new AllData();
+                    FragmentManager fm = PlaceholderFragment.this.getActivity().getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, allData).commit();
                 }
             });
 

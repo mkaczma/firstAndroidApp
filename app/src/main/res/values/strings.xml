@@ -12,5 +12,7 @@
     <string name="surname">Surname:</string>
     <string name="surname_hint">Enter your surname here</string>
     <string name="save">Save</string>
+    <string name="allData">All name and surname in database</string>
+    <string name="all_data">All data</string>
 
 </resources>

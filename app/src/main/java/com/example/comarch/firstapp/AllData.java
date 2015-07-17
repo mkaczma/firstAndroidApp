@@ -1,34 +1,29 @@
 package com.example.comarch.firstapp;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-public class PreviewDataFragment extends Fragment {
+public class AllData extends Fragment {
 
     private ImageButton backButton;
-    private TextView name;
-    private TextView surname;
+    private TableLayout tableLayout;
 
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_preview_data, container, false);
-        name = (TextView) view.findViewById(R.id.name);
-        surname = (TextView) view.findViewById(R.id.surname);
+        View view = inflater.inflate(R.layout.fragment_all_data, container, false);
+
+        tableLayout = (TableLayout) view.findViewById(R.id.tableLayout);
         backButton = (ImageButton) view.findViewById(R.id.backButton);
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -40,25 +35,29 @@ public class PreviewDataFragment extends Fragment {
             }
         });
 
-//        DatabaseExample database = new DatabaseExample(getActivity());
-//        Data data = null;
-//        if((data = database.getLastData()) == null){
-//            Toast.makeText(getActivity(), "Sorry but here there is no data.", Toast.LENGTH_SHORT).show();
-//        } else {
-//            name.setText(data.getName());
-//            surname.setText(data.getSurname());
-//        }
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         Uri data = Uri.parse(ExampleProvider.DATA_URL);
         Cursor c = getActivity().getContentResolver().query(data,null,null,null,null);
 
-        if(c.moveToLast()){
-            name.setText(c.getString(1));
-            surname.setText(c.getString(2));
+        while(c.moveToNext()){
+            TextView textView = new TextView(getActivity());
+            textView.setGravity(Gravity.CENTER);
+            textView.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            StringBuilder sb = new StringBuilder("id: ");
+            sb.append(c.getInt(0));
+            sb.append(", name: ");
+            sb.append(c.getString(1));
+            sb.append(", surname: ");
+            sb.append(c.getString(2));
+            textView.setText(sb.toString());
+            tableLayout.addView(textView);
         }
 
-        return view;
     }
-
-
 }
